@@ -156,7 +156,7 @@
         tanggal: "2024-01-01T00:00:00.000Z",
         judul: "Masjid Pesantren",
         deskripsi: "Masjid Pondok Pesantren Modern Darul Mukhlisin",
-        url: "assets/images/masjid.jpg",
+        url: "assets/images/masjid.JPG",
       },
     ];
 
