@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Pondok Pesantren Modern Darul Mukhlisin</title>
+    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Login Protection -->
+    <script src="js/auth.js"></script>
+    <script>
+      // Check if user is logged in
+      if (!authSystem.isLoggedIn()) {
+        window.location.href = 'login.html';
+      }
+      console.log('✅ Admin authenticated');
+      console.log('👤 Role:', sessionStorage.getItem('adminRole'));
+    </script>
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+      <aside
+        id="sidebar"
+        class="bg-gray-800 text-white w-64 fixed h-full transition-transform duration-300 z-50 -translate-x-full lg:translate-x-0"
+      >
+        <div class="p-6">
+          <h2 class="text-2xl font-bold mb-8">Admin Panel</h2>
+          <nav class="space-y-2">
+            <a
+              href="#dashboard"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition active"
+            >
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+            <a
+              href="#berita"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-newspaper"></i>
+              <span>Berita</span>
+            </a>
+            <a
+              href="#galeri"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-images"></i>
+              <span>Galeri</span>
+            </a>
+            <a
+              href="#guru"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-chalkboard-teacher"></i>
+              <span>Guru</span>
+            </a>
+            <a
+              href="#pesan"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-envelope"></i>
+              <span>Pesan</span>
+            </a>
+            <a
+              href="#users"
+              id="users-menu"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+              style="display:none"
+            >
+              <i class="fas fa-users-cog"></i>
+              <span>Kelola User</span>
+            </a>
+            <a
+              href="#pengaturan"
+              class="nav-item flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-cog"></i>
+              <span>Pengaturan</span>
+            </a>
+            <a
+              href="index.html"
+              class="flex items-center space-x-3 p-3 rounded hover:bg-gray-700 transition"
+            >
+              <i class="fas fa-globe"></i>
+              <span>Lihat Website</span>
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 lg:ml-64 overflow-y-auto">
+        <!-- Header -->
+        <header
+          class="bg-white shadow-md p-4 flex justify-between items-center flex-wrap gap-2"
+        >
+          <button id="sidebar-toggle" class="text-gray-700 lg:hidden">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800">Dashboard</h1>
+          <div class="flex items-center space-x-2 md:space-x-4">
+            <span class="text-gray-700 hidden sm:inline" id="admin-username">Admin</span>
+            <button
+              id="logout-btn"
+              class="bg-red-600 text-white px-3 py-2 md:px-4 rounded hover:bg-red-700 transition text-sm md:text-base"
+            >
+              <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </button>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div id="content" class="p-6">
+          <!-- Dashboard Section -->
+          <section id="dashboard-section" class="content-section">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-yellow-700 font-semibold">💡 Data Kosong?</p>
+                  <p class="text-yellow-600 text-sm">Klik tombol di bawah untuk mengisi data sample</p>
+                </div>
+                <button onclick="resetSampleData()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+                  <i class="fas fa-sync mr-2"></i>Reset Data Sample
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-600 mb-2">Total Berita</p>
+                    <h3
+                      class="text-3xl font-bold text-admin-500"
+                      id="total-berita"
+                    >
+                      0
+                    </h3>
+                  </div>
+                  <i class="fas fa-newspaper text-4xl text-admin-500"></i>
+                </div>
+              </div>
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-600 mb-2">Total Galeri</p>
+                    <h3
+                      class="text-3xl font-bold text-green-600"
+                      id="total-galeri"
+                    >
+                      0
+                    </h3>
+                  </div>
+                  <i class="fas fa-images text-4xl text-green-600"></i>
+                </div>
+              </div>
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-600 mb-2">Total Guru</p>
+                    <h3
+                      class="text-3xl font-bold text-purple-600"
+                      id="total-guru"
+                    >
+                      0
+                    </h3>
+                  </div>
+                  <i
+                    class="fas fa-chalkboard-teacher text-4xl text-purple-600"
+                  ></i>
+                </div>
+              </div>
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-600 mb-2">Pesan Masuk</p>
+                    <h3
+                      class="text-3xl font-bold text-yellow-600"
+                      id="total-pesan"
+                    >
+                      0
+                    </h3>
+                  </div>
+                  <i class="fas fa-envelope text-4xl text-yellow-600"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">Statistik Pengunjung</h3>
+                <canvas id="visitorChart"></canvas>
+              </div>
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">Aktivitas Terbaru</h3>
+                <div id="recent-activity" class="space-y-3">
+                  <!-- Activity items will be loaded here -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Berita Section -->
+          <section id="berita-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Tambah Berita Baru</h3>
+                <button type="button" onclick="resetSampleData()" class="text-sm bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                  <i class="fas fa-sync mr-1"></i>Reset Data Sample
+                </button>
+              </div>
+              <form id="berita-form" class="space-y-4">
+                <input type="hidden" id="berita-id" />
+                <div>
+                  <label class="block text-gray-700 mb-2">Judul</label>
+                  <input
+                    type="text"
+                    id="berita-judul"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  />
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2">Kategori</label>
+                    <select
+                      id="berita-kategori"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    >
+                      <option>Akademik</option>
+                      <option>Prestasi</option>
+                      <option>Kegiatan</option>
+                      <option>Pengumuman</option>
+                      <option>Info</option>
+                      <option>Beasiswa</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">Status</label>
+                    <select
+                      id="berita-status"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    >
+                      <option value="published">
+                        Published (Tampil di website)
+                      </option>
+                      <option value="draft">Draft (Belum tampil)</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Penulis</label>
+                  <input
+                    type="text"
+                    id="berita-author"
+                    placeholder="Nama penulis"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2"
+                    >Ringkasan/Excerpt (Opsional)</label
+                  >
+                  <textarea
+                    id="berita-excerpt"
+                    rows="2"
+                    placeholder="Ringkasan singkat untuk preview..."
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  ></textarea>
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Konten Lengkap</label>
+                  <textarea
+                    id="berita-konten"
+                    rows="8"
+                    required
+                    placeholder="Tulis konten berita lengkap di sini..."
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  ></textarea>
+                  <p class="text-sm text-gray-500 mt-1">
+                    💡 Tips: Gunakan paragraf untuk memisahkan konten
+                  </p>
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Gambar</label>
+                  <div class="flex gap-2 mb-2">
+                    <button type="button" id="berita-url-tab" class="px-4 py-2 bg-admin-500 text-white rounded-lg">URL</button>
+                    <button type="button" id="berita-upload-tab" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Upload</button>
+                  </div>
+                  <div id="berita-url-input">
+                    <input
+                      type="text"
+                      id="berita-gambar"
+                      placeholder="https://images.unsplash.com/..."
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                  <div id="berita-upload-input" class="hidden">
+                    <input
+                      type="file"
+                      id="berita-gambar-file"
+                      accept="image/*"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                    <img id="berita-preview" class="mt-2 max-h-40 rounded hidden" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2"
+                    >Tags (Pisahkan dengan koma)</label
+                  >
+                  <input
+                    type="text"
+                    id="berita-tags"
+                    placeholder="pendidikan, islam, pesantren"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  />
+                </div>
+                <div class="flex space-x-4">
+                  <button
+                    type="submit"
+                    class="bg-admin-500 text-white px-6 py-2 rounded-lg hover:bg-admin-600 transition"
+                  >
+                    <i class="fas fa-save mr-2"></i>Simpan
+                  </button>
+                  <button
+                    type="button"
+                    id="cancel-berita"
+                    class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition hidden"
+                  >
+                    <i class="fas fa-times mr-2"></i>Batal
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-bold mb-4">Daftar Berita</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="px-4 py-2 text-left">Judul</th>
+                      <th class="px-4 py-2 text-left">Kategori</th>
+                      <th class="px-4 py-2 text-left">Status</th>
+                      <th class="px-4 py-2 text-left">Penulis</th>
+                      <th class="px-4 py-2 text-left">Tanggal</th>
+                      <th class="px-4 py-2 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="berita-table">
+                    <!-- Data will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Galeri Section -->
+          <section id="galeri-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+              <h3 class="text-xl font-bold mb-4">Tambah Foto Galeri</h3>
+              <form id="galeri-form" class="space-y-4">
+                <input type="hidden" id="galeri-id" />
+                <div>
+                  <label class="block text-gray-700 mb-2">Judul</label>
+                  <input
+                    type="text"
+                    id="galeri-judul"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Deskripsi</label>
+                  <input
+                    type="text"
+                    id="galeri-deskripsi"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Gambar</label>
+                  <div class="flex gap-2 mb-2">
+                    <button type="button" id="galeri-url-tab" class="px-4 py-2 bg-admin-500 text-white rounded-lg">URL</button>
+                    <button type="button" id="galeri-upload-tab" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Upload</button>
+                  </div>
+                  <div id="galeri-url-input">
+                    <input
+                      type="text"
+                      id="galeri-url"
+                      placeholder="https://..."
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                  <div id="galeri-upload-input" class="hidden">
+                    <input
+                      type="file"
+                      id="galeri-file"
+                      accept="image/*"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                    <img id="galeri-preview" class="mt-2 max-h-40 rounded hidden" />
+                  </div>
+                </div>
+                <div class="flex space-x-4">
+                  <button
+                    type="submit"
+                    class="bg-admin-500 text-white px-6 py-2 rounded-lg hover:bg-admin-600 transition"
+                  >
+                    <i class="fas fa-save mr-2"></i>Simpan
+                  </button>
+                  <button
+                    type="button"
+                    id="cancel-galeri"
+                    class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition hidden"
+                  >
+                    <i class="fas fa-times mr-2"></i>Batal
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-bold mb-4">Daftar Galeri</h3>
+              <div
+                id="galeri-grid"
+                class="grid grid-cols-2 md:grid-cols-4 gap-4"
+              >
+                <!-- Gallery items will be loaded here -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Guru Section -->
+          <section id="guru-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+              <h3 class="text-xl font-bold mb-4">Tambah Data Guru</h3>
+              <form id="guru-form" class="space-y-4">
+                <input type="hidden" id="guru-id" />
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2">Nama Lengkap</label>
+                    <input
+                      type="text"
+                      id="guru-nama"
+                      required
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">NIP</label>
+                    <input
+                      type="text"
+                      id="guru-nip"
+                      required
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2"
+                      >Jabatan</label
+                    >
+                    <input
+                      type="text"
+                      id="guru-mapel"
+                      required
+                      placeholder="Guru, Kepala Sekolah, Wakil, dll"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">Pendidikan</label>
+                    <input
+                      type="text"
+                      id="guru-pendidikan"
+                      placeholder="S1/S2/S3"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-gray-700 mb-2">Foto (Opsional)</label>
+                  <p class="text-xs text-gray-500 mb-2">
+                    <i class="fas fa-info-circle"></i> Jika tidak diisi, akan menggunakan avatar default
+                  </p>
+                  <div class="flex gap-2 mb-2">
+                    <button type="button" id="guru-url-tab" class="px-4 py-2 bg-admin-500 text-white rounded-lg">URL</button>
+                    <button type="button" id="guru-upload-tab" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Upload Foto</button>
+                  </div>
+                  <div id="guru-url-input">
+                    <input
+                      type="text"
+                      id="guru-foto"
+                      placeholder="https://... (opsional)"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                  </div>
+                  <div id="guru-upload-input" class="hidden">
+                    <input
+                      type="file"
+                      id="guru-foto-file"
+                      accept="image/*"
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500"
+                    />
+                    <p class="text-xs text-yellow-600 mt-1">
+                      <i class="fas fa-exclamation-triangle"></i> Maksimal 10MB
+                    </p>
+                    <img id="guru-foto-preview" class="mt-2 max-h-40 rounded hidden" />
+                  </div>
+                </div>
+                <div class="flex space-x-4">
+                  <button
+                    type="submit"
+                    class="bg-admin-500 text-white px-6 py-2 rounded-lg hover:bg-admin-600 transition"
+                  >
+                    <i class="fas fa-save mr-2"></i>Simpan
+                  </button>
+                  <button
+                    type="button"
+                    id="cancel-guru"
+                    class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition hidden"
+                  >
+                    <i class="fas fa-times mr-2"></i>Batal
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-bold mb-4">Daftar Guru</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="px-4 py-2 text-left">Nama</th>
+                      <th class="px-4 py-2 text-left">NIP</th>
+                      <th class="px-4 py-2 text-left">Jabatan</th>
+                      <th class="px-4 py-2 text-left">Pendidikan</th>
+                      <th class="px-4 py-2 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="guru-table">
+                    <!-- Data will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pesan Section -->
+          <section id="pesan-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-bold mb-4">Pesan Masuk</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="px-4 py-2 text-left">Nama</th>
+                      <th class="px-4 py-2 text-left">Email</th>
+                      <th class="px-4 py-2 text-left">Subjek</th>
+                      <th class="px-4 py-2 text-left">Tanggal</th>
+                      <th class="px-4 py-2 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pesan-table">
+                    <!-- Data will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Users Section (Only for superadmin/admin) -->
+          <section id="users-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+              <h3 class="text-xl font-bold mb-4">Daftarkan Admin/Staff Baru</h3>
+              <form id="register-form" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2">Username *</label>
+                    <input type="text" id="reg-username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">Nama Lengkap *</label>
+                    <input type="text" id="reg-fullname" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2">Email *</label>
+                    <input type="email" id="reg-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">Role *</label>
+                    <select id="reg-role" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                      <option value="admin">Admin (Full Access)</option>
+                      <option value="staff">Staff (Limited Access)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2">Password *</label>
+                    <input type="password" id="reg-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2">Konfirmasi Password *</label>
+                    <input type="password" id="reg-confirm-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                </div>
+                <button type="submit" class="bg-admin-500 text-white px-6 py-2 rounded-lg hover:bg-admin-600 transition">
+                  <i class="fas fa-user-plus mr-2"></i>Daftarkan User
+                </button>
+              </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-bold mb-4">Daftar User</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="px-4 py-2 text-left">Username</th>
+                      <th class="px-4 py-2 text-left">Nama Lengkap</th>
+                      <th class="px-4 py-2 text-left">Email</th>
+                      <th class="px-4 py-2 text-left">Role</th>
+                      <th class="px-4 py-2 text-left">Status</th>
+                      <th class="px-4 py-2 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table">
+                    <!-- Data will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pengaturan Section -->
+          <section id="pengaturan-section" class="content-section hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+              <h3 class="text-xl font-bold mb-4">Statistik Website</h3>
+              <p class="text-gray-600 mb-6">Update angka statistik yang ditampilkan di halaman utama website</p>
+              <form id="stats-form" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2 font-semibold">Jumlah Siswa Aktif</label>
+                    <input type="number" id="stat-siswa-input" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2 font-semibold">Jumlah Guru Profesional</label>
+                    <input type="number" id="stat-guru-input" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-gray-700 mb-2 font-semibold">Jumlah Program Keahlian</label>
+                    <input type="number" id="stat-keahlian-input" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-2 font-semibold">Jumlah Prestasi</label>
+                    <input type="number" id="stat-prestasi-input" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500">
+                  </div>
+                </div>
+                <button type="submit" class="bg-admin-500 text-white px-6 py-2 rounded-lg hover:bg-admin-600 transition">
+                  <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal for Message Detail -->
+    <div
+      id="message-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Detail Pesan</h3>
+          <button id="close-modal" class="text-gray-600 hover:text-gray-800">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
+        </div>
+        <div id="modal-content" class="space-y-4">
+          <!-- Message details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Display logged in user info
+      const adminFullName = sessionStorage.getItem('adminFullName');
+      const adminRole = sessionStorage.getItem('adminRole');
+      if (adminFullName) {
+        document.getElementById('admin-username').textContent = adminFullName + ' (' + adminRole + ')';
+      }
+      
+      // Logout handler
+      document.getElementById('logout-btn').addEventListener('click', function() {
+        if (confirm('Yakin ingin logout?')) {
+          authSystem.logout();
+          window.location.href = 'login.html';
+        }
+      });
+      
+      // Image upload toggle handlers
+      function setupImageToggle(urlTabId, uploadTabId, urlInputId, uploadInputId, fileInputId, previewId) {
+        const urlTab = document.getElementById(urlTabId);
+        const uploadTab = document.getElementById(uploadTabId);
+        const urlInput = document.getElementById(urlInputId);
+        const uploadInput = document.getElementById(uploadInputId);
+        const fileInput = document.getElementById(fileInputId);
+        const preview = document.getElementById(previewId);
+        
+        urlTab.addEventListener('click', function() {
+          urlTab.classList.remove('bg-gray-300', 'text-gray-700');
+          urlTab.classList.add('bg-admin-500', 'text-white');
+          uploadTab.classList.remove('bg-admin-500', 'text-white');
+          uploadTab.classList.add('bg-gray-300', 'text-gray-700');
+          urlInput.classList.remove('hidden');
+          uploadInput.classList.add('hidden');
+        });
+        
+        uploadTab.addEventListener('click', function() {
+          uploadTab.classList.remove('bg-gray-300', 'text-gray-700');
+          uploadTab.classList.add('bg-admin-500', 'text-white');
+          urlTab.classList.remove('bg-admin-500', 'text-white');
+          urlTab.classList.add('bg-gray-300', 'text-gray-700');
+          uploadInput.classList.remove('hidden');
+          urlInput.classList.add('hidden');
+        });
+        
+        fileInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+      
+      // INLINE NAVIGATION SCRIPT - PASTI JALAN!
+      console.log('🚀 Admin Panel Loading...');
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        // Setup image toggles
+        setupImageToggle('berita-url-tab', 'berita-upload-tab', 'berita-url-input', 'berita-upload-input', 'berita-gambar-file', 'berita-preview');
+        setupImageToggle('galeri-url-tab', 'galeri-upload-tab', 'galeri-url-input', 'galeri-upload-input', 'galeri-file', 'galeri-preview');
+        setupImageToggle('guru-url-tab', 'guru-upload-tab', 'guru-url-input', 'guru-upload-input', 'guru-foto-file', 'guru-foto-preview');
+        console.log('✅ DOM Ready!');
+        console.log('👤 Logged in as:', sessionStorage.getItem('adminUsername'));
+        
+        // Show/hide Kelola User menu based on role
+        const userRole = sessionStorage.getItem('adminRole');
+        if (userRole === 'superadmin' || userRole === 'admin') {
+          document.getElementById('users-menu').style.display = 'flex';
+        }
+        
+        // Register form handler
+        document.getElementById('register-form')?.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const password = document.getElementById('reg-password').value;
+          const confirmPassword = document.getElementById('reg-confirm-password').value;
+          
+          if (password !== confirmPassword) {
+            alert('Password dan konfirmasi password tidak cocok!');
+            return;
+          }
+          
+          const userData = {
+            username: document.getElementById('reg-username').value,
+            fullName: document.getElementById('reg-fullname').value,
+            email: document.getElementById('reg-email').value,
+            role: document.getElementById('reg-role').value,
+            password: password
+          };
+          
+          const result = authSystem.register(userData);
+          
+          if (result.success) {
+            alert(result.message);
+            e.target.reset();
+            loadUsersTable();
+          } else {
+            alert(result.message);
+          }
+        });
+        
+        // Load users table
+        function loadUsersTable() {
+          const table = document.getElementById('users-table');
+          if (!table) return;
+          
+          const users = authSystem.getAllUsers();
+          
+          if (users.length === 0) {
+            table.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-600">Belum ada user</td></tr>';
+            return;
+          }
+          
+          table.innerHTML = users.map(user => `
+            <tr class="border-b hover:bg-gray-50">
+              <td class="px-4 py-3">${user.username}</td>
+              <td class="px-4 py-3">${user.fullName}</td>
+              <td class="px-4 py-3">${user.email}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded text-sm ${
+                  user.role === 'superadmin' ? 'bg-red-100 text-red-800' :
+                  user.role === 'admin' ? 'bg-blue-100 text-blue-800' :
+                  'bg-green-100 text-green-800'
+                }">
+                  ${user.role}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded text-sm ${
+                  user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                }">
+                  ${user.status}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-center">
+                ${user.role !== 'superadmin' ? `
+                  <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-800">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                ` : '<span class="text-gray-400">-</span>'}
+              </td>
+            </tr>
+          `).join('');
+        }
+        
+        // Delete user function
+        window.deleteUser = function(userId) {
+          if (confirm('Yakin ingin menghapus user ini?')) {
+            authSystem.deleteUser(userId);
+            loadUsersTable();
+            alert('User berhasil dihapus!');
+          }
+        };
+        
+        // Load users table on page load
+        loadUsersTable();
+        
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.content-section');
+        const headerTitle = document.querySelector('header h1');
+        
+        console.log('📋 Nav items:', navItems.length);
+        console.log('📋 Sections:', sections.length);
+        
+        // Function to switch sections
+        function showSection(sectionId, title) {
+          console.log('🔄 Switching to:', sectionId);
+          
+          // Hide all sections
+          sections.forEach(s => s.classList.add('hidden'));
+          
+          // Show target section
+          const target = document.getElementById(sectionId + '-section');
+          if (target) {
+            target.classList.remove('hidden');
+            console.log('✅ Showing:', sectionId);
+          } else {
+            console.error('❌ Section not found:', sectionId);
+          }
+          
+          // Update header
+          if (headerTitle) {
+            headerTitle.textContent = title;
+          }
+        }
+        
+        // Add click handlers
+        navItems.forEach((item, index) => {
+          console.log('➕ Adding listener to:', item.textContent.trim());
+          
+          item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const href = this.getAttribute('href');
+            if (!href || href === '#') return;
+            
+            const sectionId = href.replace('#', '');
+            const title = this.querySelector('span')?.textContent || sectionId;
+            
+            console.log('👆 Clicked:', title);
+            
+            // Remove active from all
+            navItems.forEach(nav => {
+              nav.classList.remove('active', 'bg-gray-700');
+            });
+            
+            // Add active to clicked
+            this.classList.add('active', 'bg-gray-700');
+            
+            // Show section
+            showSection(sectionId, title);
+          });
+        });
+        
+        console.log('🎉 Navigation ready!');
+        console.log('💡 Klik menu di sidebar untuk navigasi');
+        console.log('🔐 Role:', userRole);
+        
+        // Auto logout after 2 hours
+        const loginTime = sessionStorage.getItem('loginTime');
+        if (loginTime) {
+          const elapsed = Date.now() - new Date(loginTime).getTime();
+          const twoHours = 2 * 60 * 60 * 1000;
+          if (elapsed > twoHours) {
+            alert('Session expired. Silakan login kembali.');
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+          }
+        }
+      });
+    </script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

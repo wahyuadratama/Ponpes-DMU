@@ -1,0 +1,32 @@
+{
+  "name": "website-pesantren-dmu",
+  "version": "1.0.0",
+  "description": "Website Pondok Pesantren Modern Darul Mukhlisin - Platform informasi dan pendaftaran online",
+  "main": "index.html",
+  "scripts": {
+    "build": "tailwindcss -i ./css/input.css -o ./css/output.css --minify",
+    "watch": "tailwindcss -i ./css/input.css -o ./css/output.css --watch",
+    "dev": "npm run watch"
+  },
+  "keywords": [
+    "website",
+    "sekolah",
+    "pesantren",
+    "pendaftaran",
+    "tailwindcss",
+    "javascript"
+  ],
+  "author": "Pondok Pesantren Modern Darul Mukhlisin",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/website-pesantren-dmu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/website-pesantren-dmu/issues"
+  },
+  "homepage": "https://github.com/username/website-pesantren-dmu#readme"
+}

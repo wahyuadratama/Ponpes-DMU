@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages from search engines
+Disallow: /admin.html
+Disallow: /js/admin.js
+
+# Sitemap
+Sitemap: https://www.smkdarmamulia.sch.id/sitemap.xml

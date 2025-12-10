@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin - Pondok Pesantren Modern Darul Mukhlisin</title>
+  <link rel="stylesheet" href="css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative" style="background: linear-gradient(135deg, rgba(0, 84, 97, 0.85), rgba(0, 50, 58, 0.9)), url('assets/images/masjid.jpg') center/cover no-repeat fixed;">
+  <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-8 animate-fade-in-up">
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .input-focus:focus {
+      transform: scale(1.01);
+      transition: transform 0.2s;
+    }
+    .btn-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 84, 97, 0.3);
+      transition: all 0.3s;
+    }
+  </style>
+    <!-- Logo/Header -->
+    <div class="text-center mb-8">
+      <div class="bg-admin-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+        <i class="fas fa-user-shield text-white text-3xl"></i>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-800">Login Admin</h1>
+      <p class="text-gray-600 mt-2">Pondok Pesantren Modern Darul Mukhlisin</p>
+    </div>
+
+    <!-- Alert -->
+    <div id="alert" class="hidden mb-4 p-4 rounded-lg">
+      <p id="alert-message" class="text-sm"></p>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" class="space-y-6">
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          <i class="fas fa-user mr-2"></i>Username
+        </label>
+        <input 
+          type="text" 
+          id="username" 
+          required 
+          autocomplete="username"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500 focus:border-transparent input-focus transition-all"
+          placeholder="Masukkan username"
+        >
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          <i class="fas fa-lock mr-2"></i>Password
+        </label>
+        <div class="relative">
+          <input 
+            type="password" 
+            id="password" 
+            required 
+            autocomplete="current-password"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-500 focus:border-transparent pr-12 input-focus transition-all"
+            placeholder="Masukkan password"
+          >
+          <button 
+            type="button" 
+            id="toggle-password" 
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            <i class="fas fa-eye" id="eye-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        class="w-full bg-admin-500 text-white py-3 rounded-lg font-semibold hover:bg-admin-600 flex items-center justify-center btn-hover"
+      >
+        <i class="fas fa-sign-in-alt mr-2"></i>
+        Login
+      </button>
+    </form>
+
+    <!-- Info -->
+    <div class="mt-6 p-4 bg-admin-50 rounded-lg">
+      <p class="text-sm text-gray-700 text-center">
+        <i class="fas fa-info-circle text-admin-500 mr-1"></i>
+        Hanya admin yang memiliki akses
+      </p>
+    </div>
+
+    <!-- Default Credentials -->
+    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <p class="text-xs text-yellow-800 font-semibold mb-2">
+        <i class="fas fa-key mr-1"></i>Default Super Admin:
+      </p>
+      <p class="text-xs text-yellow-700">Username: <strong>superadmin</strong></p>
+      <p class="text-xs text-yellow-700">Password: <strong>Super@dmin123</strong></p>
+      <p class="text-xs text-red-600 mt-2">⚠️ Ganti password setelah login!</p>
+    </div>
+
+    <!-- Back to Website -->
+    <div class="mt-6 text-center">
+      <a href="index.html" class="text-admin-500 hover:text-admin-700 text-sm">
+        <i class="fas fa-arrow-left mr-1"></i>Kembali ke Website
+      </a>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    // Auth system sudah di-load dari auth.js
+
+    // Toggle password visibility
+    document.getElementById('toggle-password').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    });
+
+    // Show alert
+    function showAlert(message, type = 'error') {
+      const alert = document.getElementById('alert');
+      const alertMessage = document.getElementById('alert-message');
+      
+      alert.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+      
+      if (type === 'error') {
+        alert.classList.add('bg-red-100', 'text-red-700');
+      } else {
+        alert.classList.add('bg-green-100', 'text-green-700');
+      }
+      
+      alertMessage.textContent = message;
+      
+      setTimeout(() => {
+        alert.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Login form handler
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Login using auth system
+      const result = authSystem.login(username, password);
+      
+      if (result.success) {
+        showAlert('Login berhasil! Mengalihkan...', 'success');
+        
+        // Redirect to admin panel
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 1000);
+      } else {
+        showAlert(result.message);
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+    });
+
+    // Check if already logged in
+    if (authSystem.isLoggedIn()) {
+      window.location.href = 'admin.html';
+    }
+
+    console.log('🔐 Login page loaded');
+  </script>
+</body>
+</html>
