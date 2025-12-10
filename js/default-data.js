@@ -14,11 +14,11 @@
     const defaultBerita = [
       {
         id: 1704067200000,
-        tanggal: "2024-01-01T00:00:00.000Z",
-        judul: "Pendaftaran Santri Baru 2024/2025",
+        tanggal: "2025-12-01T00:00:00.000Z",
+        judul: "Pendaftaran Santri Baru 2026/2027",
         kategori: "Pengumuman",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt:
           "Pendaftaran santri baru dibuka dengan berbagai program unggulan",
         konten:
@@ -28,11 +28,11 @@
       },
       {
         id: 1704153600000,
-        tanggal: "2024-01-02T00:00:00.000Z",
+        tanggal: "2025-12-02T00:00:00.000Z",
         judul: "Keberangkatan Alumni Ke Al-Azhar Mesir",
         kategori: "Prestasi",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt:
           "Alumni Pondok Pesantren Darul Mukhlisin melanjutkan studi ke Al-Azhar Mesir",
         konten:
@@ -42,11 +42,11 @@
       },
       {
         id: 1704240000000,
-        tanggal: "2024-01-03T00:00:00.000Z",
+        tanggal: "2025-12-03T00:00:00.000Z",
         judul: "Rapat 10 Tahun Pondok",
         kategori: "Kegiatan",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt:
           "Peringatan 10 tahun berdirinya Pondok Pesantren Darul Mukhlisin",
         konten:
@@ -56,11 +56,11 @@
       },
       {
         id: 1704326400000,
-        tanggal: "2024-01-04T00:00:00.000Z",
+        tanggal: "2025-12-04T00:00:00.000Z",
         judul: "Kegiatan Pramuka",
         kategori: "Kegiatan",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt:
           "Santri mengikuti kegiatan pramuka untuk melatih kedisiplinan dan kemandirian",
         konten:
@@ -70,11 +70,11 @@
       },
       {
         id: 1704412800000,
-        tanggal: "2024-01-05T00:00:00.000Z",
+        tanggal: "2025-08-05T00:00:00.000Z",
         judul: "Kajian Rutin",
         kategori: "Kegiatan",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt: "Kajian rutin untuk memperdalam ilmu agama",
         konten:
           "Pondok Pesantren Modern Darul Mukhlisin mengadakan kajian rutin setiap minggu untuk memperdalam pemahaman santri tentang ilmu agama. Kajian dipimpin langsung oleh ustadz senior dengan materi yang aplikatif.",
@@ -83,11 +83,11 @@
       },
       {
         id: 1704499200000,
-        tanggal: "2024-01-06T00:00:00.000Z",
+        tanggal: "2025-09-06T00:00:00.000Z",
         judul: "Tatapan Lensa: Santri DMU Mengikuti Jambore Dunia",
         kategori: "Prestasi",
         status: "published",
-        author: "Admin",
+        author: "Zaenal Wahyudin",
         excerpt: "Santri Darul Mukhlisin mewakili Indonesia di Jambore Dunia",
         konten:
           "Santri Pondok Pesantren Modern Darul Mukhlisin terpilih mewakili Indonesia dalam kegiatan Jambore Dunia. Kegiatan ini menjadi ajang untuk memperkenalkan budaya Indonesia dan menjalin persahabatan dengan peserta dari berbagai negara.",
@@ -100,7 +100,7 @@
     const defaultGaleri = [
       {
         id: 1704067200001,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-06-01T00:00:00.000Z",
         judul: "Kegiatan Kajian Menjelang Berbuka",
         deskripsi:
           "Suasana kajian sore santri bersama bapak pimpinan sebelum berbuka puasa",
@@ -108,7 +108,7 @@
       },
       {
         id: 1704067200002,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-05-01T00:00:00.000Z",
         judul: "Rapat 10 Tahun Pondok",
         deskripsi:
           "Rapat persiapan memperingati 10 tahun berdirinya Pondok Pesantren Modern Darul Mukhlisin",
@@ -116,7 +116,7 @@
       },
       {
         id: 1704067200003,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         judul: "Keberangkatan alumni ke Al-Azhar",
         deskripsi:
           "Alumni ke-4 Pondok Pesantren Modern Darul Mukhlisin berangkat ke Al-Azhar Mesir untuk melanjutkan studi",
@@ -124,7 +124,7 @@
       },
       {
         id: 1704067200004,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         judul: "Tasyakuran",
         deskripsi:
           "Tasyakuran dan doa untuk alumni yang berangkat ke Al-Azhar Mesir",
@@ -132,28 +132,28 @@
       },
       {
         id: 1704067200005,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-04-01T00:00:00.000Z",
         judul: "Kegiatan Pesantren",
         deskripsi: "Berbagai kegiatan positif di lingkungan pesantren",
         url: "assets/images/b8.jpg",
       },
       {
         id: 1704067200006,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-10-01T00:00:00.000Z",
         judul: "Santri menikmati MBG",
         deskripsi: "Suasana santri menikmati makanan bergizi",
         url: "assets/images/b9.jpg",
       },
       {
         id: 1704067200007,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-09-01T00:00:00.000Z",
         judul: "Kegiatan Santri",
         deskripsi: "Dokumentasi kegiatan santri sehari-hari",
         url: "assets/images/b10.jpg",
       },
       {
         id: 1704067200008,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-11-01T00:00:00.000Z",
         judul: "Masjid Pesantren",
         deskripsi: "Masjid Pondok Pesantren Modern Darul Mukhlisin",
         url: "assets/images/masjid.JPG",
@@ -164,7 +164,7 @@
     const defaultGuru = [
       {
         id: 1704067200001,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         nama: "Al-Ustadz Dwi Saputro, S.PdI.",
         nip: "197501012000031001",
         Jabatan: "Pimpinan Pondok",
@@ -173,7 +173,7 @@
       },
       {
         id: 1704067200002,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         nama: "Ustadz Aflah Gusman, S.E",
         nip: "198203152005012002",
         Jabatan: "Direktur KMI",
@@ -182,7 +182,7 @@
       },
       {
         id: 1704067200003,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         nama: "Al-Ustadz Ahmad Saepudin, S.Pd",
         nip: "198905202010011003",
         Jabatan: "Kepala Pengasuhan Putri",
@@ -191,7 +191,7 @@
       },
       {
         id: 1704067200004,
-        tanggal: "2024-01-01T00:00:00.000Z",
+        tanggal: "2025-12-01T00:00:00.000Z",
         nama: "Al-Ustadz Hudaebi, S.H",
         nip: "199012252015012004",
         Jabatan: "Sekretaris Pimpinan",
