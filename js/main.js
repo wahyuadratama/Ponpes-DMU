@@ -440,3 +440,32 @@ document.addEventListener('DOMContentLoaded', () => {
   
   console.log('✅ Website loaded!');
 });
+
+
+// Scroll Animation Observer
+function setupScrollAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, observerOptions);
+
+  // Observe all animated elements
+  document.querySelectorAll('.fade-in-up, .fade-in, .scale-in, .slide-in-left, .slide-in-right').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// Call setupScrollAnimations on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupScrollAnimations);
+} else {
+  setupScrollAnimations();
+}
